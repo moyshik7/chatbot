@@ -12,6 +12,11 @@ trainer = ListTrainer(bot)
 
 load_dotenv()
 
+def train(a, b):
+    return trainer.train([ a, b ])
+def test(a):
+    return bot.get_response(a)
+
 @client.event
 async def on_ready():
     print('We have logged in')
@@ -20,12 +25,18 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.author == client.user:
-        return
-
+        return(False)
     if message.content.startswith("train"):
-        await message.channel.send("train me oni chan")
+        a = message.content[len("train "): len(message.content)].split("\n")
+        if len(a) != 2:
+            return await message.channel.send("UwU wrong format")
+        train(a[0], a[1])
+        return message.channel.send("You trained me so hard onii chan")
     if message.content.startswith("test"):
-        await message.channel.send("Owo testing")
+         a = message.content[len("test"): len(message.content)]
+        if len(strip(a)) <= 0:
+            return message.channel.send("Baka !!\nWrong format")
+        return message.channel.send(test(strip(a)))
 
 
 client.run(os.getenv("BOT_TOKEN"))
