@@ -12,7 +12,7 @@ trainer = ListTrainer(bot)
 
 load_dotenv()
 
-def train(a, b):
+async def train(a, b):
     return trainer.train([ a, b ])
 def test(a):
     return bot.get_response(a)
@@ -29,14 +29,15 @@ async def on_message(message):
     if message.content.startswith("train"):
         a = message.content[len("train "): len(message.content)].split("\n")
         if len(a) != 2:
+            print(len(a))
             return await message.channel.send("UwU wrong format")
-        train(a[0], a[1])
-        return message.channel.send("You trained me so hard onii chan")
+        await train(a[0], a[1])
+        return await message.channel.send("You trained me so hard onii chan")
     if message.content.startswith("test"):
          a = message.content[len("test"): len(message.content)]
-        if len(strip(a)) <= 0:
-            return message.channel.send("Baka !!\nWrong format")
-        return message.channel.send(test(strip(a)))
+         if len(a.strip()) <= 0:
+             return await message.channel.send("Baka !!\nWrong format")
+         return await message.channel.send(test(a.strip()))
 
 
 client.run(os.getenv("BOT_TOKEN"))
