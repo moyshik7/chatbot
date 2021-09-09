@@ -5,6 +5,7 @@ from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 
 bot = ChatBot("Imouto",
+    silence_performance_warning=True,
     database_uri="sqlite:///database.db"
 )
 client = discord.Client()
@@ -28,16 +29,18 @@ async def on_message(message):
         return(False)
     if message.content.startswith("train"):
         a = message.content[len("train "): len(message.content)].split("\n")
-        if len(a) != 2:
+        if len(a) < 2:
             print(len(a))
             return await message.channel.send("UwU wrong format")
-        await train(a[0], a[1])
-        return await message.channel.send("You trained me so hard onii chan")
+        else:
+            await train(a[0], a[1])
+            return await message.channel.send("You trained me so hard onii chan")
     if message.content.startswith("test"):
          a = message.content[len("test"): len(message.content)]
          if len(a.strip()) <= 0:
              return await message.channel.send("Baka !!\nWrong format")
-         return await message.channel.send(test(a.strip()))
+         else:
+             return await message.channel.send(test(a.strip()))
 
 
 client.run(os.getenv("BOT_TOKEN"))
