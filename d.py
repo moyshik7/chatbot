@@ -13,8 +13,8 @@ trainer = ListTrainer(bot)
 
 load_dotenv()
 
-async def train(a, b):
-    return trainer.train([ a, b ])
+async def train(a):
+    return trainer.train(a)
 def test(a):
     return bot.get_response(a)
 
@@ -33,7 +33,7 @@ async def on_message(message):
             print(len(a))
             return await message.channel.send("UwU wrong format")
         else:
-            await train(a[0], a[1])
+            await train(a)
             return await message.channel.send("You trained me so hard onii chan")
     if message.content.startswith("test"):
          a = message.content[len("test"): len(message.content)]
