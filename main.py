@@ -103,7 +103,7 @@ async def train(ctx, *args):
             #e = ar[3].lower()
             set(a, b)
             return await ctx.reply("added `"+ b + "` for `" + a + "`")
-@client command(name = "test")
+@client.command(name = "test")
 async def test(ctx, *args):
     if len(args) < 1:
         return await ctx.reply("Shooo")
