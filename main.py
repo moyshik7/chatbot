@@ -6,7 +6,17 @@ from sklearn.metrics.pairwise import cosine_similarity
 import re
 # sqlite database
 import sqlite3 as sqlite
+# discord for easily training
+from discord.ext import commands
+# dotenv in python
+from dotenv import load_dotenv
+# os for reading env variables
+import os
 
+prefix = "_"
+load_dotenv()
+
+client = commands.Bot(command_prefix="_")
 conn = sqlite.connect("data.db")
 
 cursor = conn.cursor()
@@ -74,6 +84,30 @@ def set(a,b):
         #f_e.append(e)
     except:
         print("Something went wrong")
-set("Morning", "Ohio, oni-chan!")
+#set("Morning", "Ohio, oni-chan!")
 print(get("Morning nee-san"))
 
+
+@client.command(name = "train")
+async def train(ctx, *args):
+    if len(args) < 1:
+        return await ctx.reply("Go awoo")
+    else:
+        text = str(ctx.message.content)[len(prefix + "train "): len(ctx.message.content)]
+        ar = text.split("\n")
+        if (len(ar) <2) or (len(ar) >3):
+            return await ctx.reply("Noooooo")
+        else:
+            a = ar[0]
+            b = ar[1]
+            #e = ar[3].lower()
+            set(a, b)
+            return await ctx.reply("added `"+ b + "` for `" + a + "`")
+@client command(name = "test")
+async def test(ctx, *args):
+    if len(args) < 1:
+        return await ctx.reply("Shooo")
+    else:
+        text = " ".join(args)
+        return await ctx.reply(get(text))
+client.run(os.getenv("BOT_TOKEN"))
